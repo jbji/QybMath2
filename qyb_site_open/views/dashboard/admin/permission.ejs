@@ -1,0 +1,184 @@
+<div class="container-md d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-1 mt-5 border-bottom">
+    <h1 class="text-primary">授予管理权限</h1>
+<!--    <div class="btn-toolbar mb-md-0">-->
+<!--        <a href="/dashboard/problems/add" class="btn btn-primary" title="创建新题目"><i class="fa fa-plus me-2" aria-hidden="true"></i>创建新题目</a>-->
+<!--    </div>-->
+</div>
+
+<div class="container-md my-4">
+    <p>注：目前Jury和Admin不作区分，计划中的特性有：
+        <ul>
+            <li>
+                将修改密码功能仅开放给Admin；
+            </li>
+            <li>
+                Jury不可授予Admin权限；
+            </li>
+            <li>
+                Jury可以添加和修改信息但是不可以删除信息
+            </li>
+        </ul>
+    修改将在下次登录时生效。
+    </p>
+</div>
+<div class="container-md my-4">
+    <h3 class="text-secondary">授予裁判Jury权限</h3>
+    <div class="row">
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">UID</span>
+            <input type="text" class="form-control" id="grant_jury_uid" aria-describedby="basic-addon3">
+            <button class="btn btn-outline-secondary" id="btn_grant_jury_uid">授予权限</button>
+        </div>
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">QQ</span>
+            <input type="text" class="form-control" id="grant_jury_qq" aria-describedby="basic-addon3">
+            <button class="btn btn-outline-secondary" id="btn_grant_jury_qq">授予权限</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-md my-4">
+    <h3 class="text-secondary">授予管理员Admin权限</h3>
+    <div class="row">
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">UID</span>
+            <input type="text" class="form-control" id="grant_admin_uid" aria-describedby="basic-addon3">
+            <button class="btn btn-outline-primary" id="btn_grant_admin_uid">授予权限</button>
+        </div>
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">QQ</span>
+            <input type="text" class="form-control" id="grant_admin_qq" aria-describedby="basic-addon3">
+            <button class="btn btn-outline-primary" id="btn_grant_admin_qq">授予权限</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-md my-4">
+    <h3 class="text-secondary">撤回权限</h3>
+    <div class="row">
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">UID</span>
+            <input type="text" class="form-control" id="revoke_uid" aria-describedby="basic-addon3">
+            <button class="btn btn-outline-danger" id="btn_revoke_uid">撤回所有权限</button>
+        </div>
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">QQ</span>
+            <input type="text" class="form-control" id="revoke_qq" aria-describedby="basic-addon3">
+            <button class="btn btn-outline-danger" id="btn_revoke_qq">撤回所有权限</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-md my-5">
+    <h2 class="text-primary">当前所有具备特殊权限的用户列表</h2>
+    <div class="alert bg-light">
+        <div class="row">
+            <div>
+                <table id="table">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--按钮事件-->
+<script>
+    $("#btn_grant_jury_uid").click(function(){
+        $.get("/res/users/grant/UID/"+$('#grant_jury_uid').val()+"/1", function(data,status){
+            alert("提示: \n" + data + "\n状态: " + status);
+        });
+    });
+    $("#btn_grant_jury_qq").click(function(){
+        $.get("/res/users/grant/QQ/"+$('#grant_jury_qq').val()+"/1", function(data,status){
+            alert("提示: \n" + data + "\n状态: " + status);
+        });
+    });
+
+    $("#btn_grant_admin_uid").click(function(){
+        $.get("/res/users/grant/UID/"+$('#grant_admin_uid').val()+"/2", function(data,status){
+            alert("提示: \n" + data + "\n状态: " + status);
+        });
+    });
+    $("#btn_grant_admin_qq").click(function(){
+        $.get("/res/users/grant/QQ/"+$('#grant_admin_qq').val()+"/2", function(data,status){
+            alert("提示: \n" + data + "\n状态: " + status);
+        });
+    });
+
+    $("#btn_revoke_uid").click(function(){
+        $.get("/res/users/revoke/UID/"+$('#revoke_uid').val(), function(data,status){
+            alert("提示: \n" + data + "\n状态: " + status);
+        });
+    });
+
+    $("#btn_revoke_qq").click(function(){
+        $.get("/res/users/revoke/QQ/"+$('#revoke_qq').val(), function(data,status){
+            alert("提示: \n" + data + "\n状态: " + status);
+        });
+    });
+
+</script>
+<!--生成表格-->
+<script>
+    $(function(){
+        $('#table').bootstrapTable({
+            ajax : function (request) {
+                $.ajax({
+                    type : "GET",
+                    url : "/res/users/getAdmins",
+                    contentType: "application/json;charset=utf-8",
+                    dataType:"json",
+                    data:'',
+                    jsonp:'callback',
+                    success : function (msg) {
+                        request.success({
+                            row : msg
+                        });
+                        $('#table').bootstrapTable('load', msg);
+                    },
+                    error:function(){
+                        alert("错误");
+                    }
+                });
+            },
+
+            toolbar:'#toolbar',
+            singleSelect:true,
+            clickToSelect:true,
+            sortName: "UID",
+            sortOrder: "desc",
+            pageSize: 15,
+            pageNumber: 1,
+            pageList: "[10, 25, 50, 100, All]",
+            showToggle: true,
+            showRefresh: true,
+            showColumns: false,
+            search: true,
+            pagination: true,
+            columns: [{
+                field: 'UID',
+                title: '用户UID',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'Nickname',
+                title: '昵称',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'QQ',
+                title: 'QQ号',
+                switchable: true,
+                sortable: true
+            },{
+                field: 'Role',
+                title: '角色',
+                formatter: operateUserType,
+                switchable: true,
+                sortable: true
+            }],
+
+        });
+    });
+</script>
+
+<%-include('../../common/scripts/tableOperation.ejs')%>

@@ -1,0 +1,27 @@
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/">主页</a>
+    </li>
+    <li class="nav-item">
+        <%if(globalContest){%>
+            <a class="nav-link" aria-current="page" href="/contest"><i class="fa fa-flag mx-1" aria-hidden="true"></i>当前比赛</a>
+        <%}%>
+    </li>
+    <li class="nav-item dropdown gap-5 justify-content-center">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            往届试题
+        </a>
+        <%if(colorstyle==='light'){%>
+            <ul class="dropdown-menu dropdown-menu-macos shadow" aria-labelledby="navbarDropdown">
+        <%} else{%>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-macos shadow" aria-labelledby="navbarDropdown">
+        <%}%>
+
+            <li><a class="dropdown-item" href="#">挑战赛</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">数学竞赛高中组</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">数学竞赛初中组</a></li>
+        </ul>
+    </li>
+</ul>

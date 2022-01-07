@@ -1,0 +1,51 @@
+<%- contentFor('pageSection') %>
+<div class = "container-fluid px-0">
+<!--    <div class="m-4"></div>-->
+<!--    当前比赛block-->
+    <div class="px-5 p-5 bg-light QybBgBanner">
+        <div class="p-4"></div>
+        <div class="p-4"></div>
+        <h1 class="display-4 fw-bold mb-3">当前比赛</h1>
+        <%if(globalContest){%>
+        <h5 class="col-md-4 fs-3 text-secondary"><%=globalContest.Name%></h5>
+        <p class="col-md-4 fs-4">
+            比赛开始时间：<%=globalContest.StartTime%><br>
+            比赛结束时间：<%=globalContest.EndTime%>
+        </p>
+        <button onclick="location='/contest'" class="btn QybColorButton"  type="button">立即查看</button>
+        <%}else{%>
+            <h5 class="col-md-4 fs-4 text-secondary">最近没有比赛，不如去看看往届试题吧～</h5>
+            <div class="p-5"></div>
+        <%}%>
+<!--        <div class="p-3"></div>-->
+        <div class="p-5 bg-light bg-opacity-75" style="margin-bottom:-3rem; margin-left:-3rem; margin-right:-3rem; margin-top:3rem">
+<!--            底部导航栏-->
+        </div>
+    </div>
+<!--    <div class="p-3"></div>-->
+<!--    小block-->
+<!--    <div class="pt-3 pb-4 bg-light"></div>-->
+    <div class="p-5 text-center">
+        <h2>往届试题</h2>
+        <a class="QybColorFont">查看全部往届试题 ></a>
+    </div>
+<!--    <div class="pt-3 pb-4 bg-light"></div>-->
+
+<!--    <div class="row align-items-md-stretch">-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="h-100 p-5 text-white bg-dark bg-opacity-75">-->
+<!--                <h2>Change the background</h2>-->
+<!--                <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>-->
+<!--                <button class="btn btn-outline-light" type="button">Example button</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="h-100 p-5 bg-light border bg-opacity-75">-->
+<!--                <h2>Add borders</h2>-->
+<!--                <p>Or, keep it light and add a border for some added definition to the boundaries of your content. Be sure to look under the hood at the source HTML here as we've adjusted the alignment and sizing of both column's content for equal-height.</p>-->
+<!--                <button class="btn btn-outline-secondary" type="button">Example button</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="m-4"></div>-->
+</div>

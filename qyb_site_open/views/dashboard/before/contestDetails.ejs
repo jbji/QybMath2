@@ -1,0 +1,80 @@
+<div class="container-md d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-1 mt-5 border-bottom">
+    <h1 class="text-success">
+        设置考生须知<%if(ContestID || ShortName) {%> - <%=ShortName%>(<%=ContestID%>)<%}%>
+    </h1>
+</div>
+
+<div class="container-md mt-3">
+    <p class="text-success">展示在两级标题下方的考生须知，描述考生在参加一场考试前所需知晓的所有事项。</p>
+</div>
+
+<!--<div class="conrainer-md p-4 mt-3">-->
+<!--    <h3 class="text-danger">注意：此页面尚未完工，误操作可能引起未知错误。</h3>-->
+<!--</div>-->
+
+<%if(!ContestID){%>
+    <div class="conrainer-md px-4 pt-2">
+    <!--    <h2 class="text-secondary mb-3">比赛ID</h2>-->
+        <div class="alert bg-light">
+            <div class="input-group">
+                <span class="input-group-text">输入比赛ID以编辑考生须知</span>
+                <input class="form-control" value="" id="contestID">
+                <button class="btn btn-secondary" id="submitContestID">编辑</button>
+            </div>
+        </div>
+    </div>
+<%}%>
+
+<input type="hidden" id="ContestID" value="<%= ContestID %>">
+<input type="hidden" id="ShortName" value="<%= ShortName %>">
+<input type="hidden" id="CurrentDetails" value="<%= RuleObject %>">
+
+<div class="conrainer-md px-4 pt-4">
+    <h2 class="text-secondary mb-3">考生须知HTML编辑器</h2>
+    <div class="alert bg-light px-3">
+<!--        <h5>比赛详情（考生须知）HTML编辑器</h5>-->
+        <p>在此编辑考生须知</p>
+        <textarea id="contestDetails"></textarea>
+        <button id="submitContestDetails" class="btn btn-outline-success mt-3">提交</button>
+        <script>
+            tinymce.init({
+                selector: '#contestDetails',
+                // language:'zh_CN',
+                // width: 600,
+                height: 500,
+                plugins: 'code link image paste table print help emoticons',
+                toolbar: 'code | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                    'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+                    'forecolor backcolor emoticons | help | tools'
+            });
+        </script>
+    </div>
+</div>
+
+<script>
+    var setContent = function(){
+        tinyMCE.get('contestDetails').setContent(
+            utf8to16(window.atob( JSON.parse( window.atob( $('#CurrentDetails').val() ) )['body'] ))
+        );
+    };
+    $(document).ready(function(){
+        setTimeout("setContent()", 500);
+    });
+    $('#submitContestID').click(function(){
+        window.location.href = '/dashboard/contests/setDetails/' + $('#contestID').val();
+    });
+    $('#submitContestDetails').click(function(){
+        var text = tinyMCE.get('contestDetails');
+        text.setProgressState(1);
+       $.post('/res/contests/editDetails',{
+           ContestID: $('#ContestID').val(),
+           RuleObject: text.getContent()
+       },function(data, status){
+           alert(data);
+           text.setProgressState(0);
+       });
+    });
+</script>
+
+<%include imgResources.ejs%>
+<%-include('../../common/scripts/chineseBase64tool.ejs')%>

@@ -1,0 +1,23 @@
+<div class="container-md d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-1 mt-5 border-bottom">
+    <h1 class="text-primary">快速管理</h1>
+<!--    <div class="btn-toolbar mb-md-0">-->
+<!--        <a href="/dashboard/problems/add" class="btn btn-primary" title="创建新题目"><i class="fa fa-plus me-2" aria-hidden="true"></i>创建新题目</a>-->
+<!--    </div>-->
+</div>
+<div class="conrainer-md p-4 mt-3">
+    <h3 class="text-warning">注意：未完工功能可能存在未知错误，建议不要尝试.</h3>
+    <p>若服务器出现502错误，一般情况下只需等待几秒钟即可。</p>
+</div>
+
+
+<div class="container-md my-4">
+    <h2>常用功能</h2>
+    <a href="/dashboard/problems/add" class="btn btn-primary" title="创建新题目"><i class="fa fa-plus me-2" aria-hidden="true"></i>创建新题目</a>
+</div>
+
+<div class="conrainer-md p-4">
+    <h2 class="text-secondary mb-3">当前比赛</h2>
+    <div class="alert bg-light">
+        <%-include('./before/contestCurrentCore.ejs')%>
+    </div>
+</div>

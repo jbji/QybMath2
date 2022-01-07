@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <!-- Bootstrap core CSS -->
+    <% include ../common/header.ejs %>
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        /*signin special*/
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+            /*background-position:  center top;*/
+            /*background-image: url("/images/qybbg.png");*/
+            /*background-size:100% 100%;*/
+            /*background-repeat:no-repeat;*/
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+    </style>
+</head>
+<body class="text-center">
+
+<main class="form-signin">
+    <form method="post">
+        <a href="/">
+        <img class="mb-4" src="https://qyb-static-res-1252542694.cos.ap-beijing.myqcloud.com/logo.png" alt="" width="165" height="171">
+        </a>
+        <h1 class="h3 mb-3 fw-normal">欢迎来到全员杯！</h1>
+        <button type="button" class="w-50 btn btn-sm mt-2 mb-4 btn-outline-danger" onclick="location='/auth/register'">没有账号？在此注册</button>
+        <h2 class="h4 mb-3 fw-normal">在这里登录</h2>
+        <%if (message!=='') {%>
+            <h2 class="h4 mb-3 fw-normal text-warning"><%=message%></h2>
+        <%}%>
+
+        <div class="form-floating shadow">
+            <input type="text" class="form-control" id="floatingInput" placeholder="QQ" name="QQ">
+            <label for="floatingInput">你注册使用的QQ号</label>
+        </div>
+        <div class="form-floating shadow">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="pwd">
+            <label for="floatingPassword">你的全员杯密码</label>
+        </div>
+        <a class="w-50 text-danger" id="forgetpw">忘记密码？</a>
+
+<!--        能力不够，以后再实现-->
+<!--        <div class="checkbox mb-3">-->
+<!--            <label>-->
+<!--                <input type="checkbox" value="remember-me"> 记住我（请勿在公共电脑上勾选）-->
+<!--            </label>-->
+<!--        </div>-->
+        <button class="w-100 btn btn-lg btn-primary shadow my-3" type="submit">登录</button>
+
+
+        <div class="mt-5 mb-3 text-muted">
+            <% include ../common/copyright %>
+        </div>
+    </form>
+</main>
+<script>
+    $('#forgetpw').click(function (){
+        alert('请加入全员杯竞赛QQ群(105314727)，联系管理员以获取重置密码链接');
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,302 @@
+<div class="container-md d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-1 mt-5 border-bottom">
+    <h1 class="text-primary">比赛管理</h1>
+    <div class="btn-toolbar mb-md-0">
+        <a href="/dashboard/contests/add" class="btn btn-primary" title="创建新比赛"><i class="fa fa-plus me-2" aria-hidden="true"></i>创建新比赛</a>
+    </div>
+</div>
+
+<!--<div class="conrainer-md p-4 mt-3">-->
+<!--    <h3 class="text-danger">注意：此页面尚未完工，误操作可能引起未知错误。</h3>-->
+<!--</div>-->
+
+<div class="container-md mt-3">
+    <p class="text-primary">一个比赛是在一定的时间范围内展示有限信息的信息组，标识+时间戳+内容构成了一场比赛。
+        此外，比赛还定义对自身的控制器行为。</p>
+</div>
+
+<div class="conrainer-md px-4 pt-2">
+    <h2 class="text-secondary mb-3">当前比赛</h2>
+    <div class="alert bg-light">
+        <%-include('./contestCurrentCore.ejs')%>
+    </div>
+</div>
+
+<div class="conrainer-md px-4">
+    <h2 class="text-secondary mb-3">切换当前比赛</h2>
+    <div class="alert bg-light">
+        <%-include('./contestCurrentSwitcherCore.ejs')%>
+    </div>
+</div>
+
+<div class="container-md px-4">
+<!--    表格：最近添加的比赛-->
+    <h2 class="text-secondary mb-3 mt-3">最近添加的比赛</h2>
+    <div class="alert bg-light">
+        <div class="row">
+            <div>
+                <table id="table">
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--    Modal：查看比赛详情+修改比赛 -->
+    <script>
+        var editModal = new bootstrap.Modal(document.getElementById('editModal'), options);
+    </script>
+    <!--Modal：修改比赛-->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="basicModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="editModalLabel">修改比赛</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <%-include('./contestEditCore.ejs')%>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="editSubmit">提交</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--恢复误删-->
+<div class="container-md px-4 mt-3 row">
+    <div class="col-md input-group mb-3">
+        <span class="input-group-text" id="basic-addon3">根据比赛ID恢复已删除比赛</span>
+        <input type="text" class="form-control" id="input_redoDelete" aria-describedby="basic-addon3">
+        <button class="btn btn-secondary" id="btn_redoDelete">恢复误删</button>
+    </div>
+    <script>
+        $("#btn_redoDelete").click(function(){
+            $.get("/res/contests/redodelete/"+$("#input_redoDelete").val(),function(data,status){
+                alert(data);
+            });
+        });
+    </script>
+    <div class="col-md"></div>
+</div>
+
+<script>
+    // 定义表格
+    $(function(){
+        $('#table').bootstrapTable({
+            ajax : function (request) {
+                $.ajax({
+                    type : "GET",
+                    url : "/res/contests/getAll",
+                    contentType: "application/json;charset=utf-8",
+                    dataType:"json",
+                    data:'',
+                    jsonp:'callback',
+                    success : function (msg) {
+                        request.success({
+                            row : msg
+                        });
+                        $('#table').bootstrapTable('load', msg);
+                    },
+                    error:function(){
+                        alert("错误");
+                    }
+                });
+            },
+
+            toolbar:'#toolbar',
+            singleSelect:true,
+            clickToSelect:true,
+            sortName: "ContestID",
+            sortOrder: "desc",
+            pageSize: 15,
+            pageNumber: 1,
+            pageList: "[10, 25, 50, 100, All]",
+            showToggle: true,
+            showRefresh: true,
+            showColumns: false,
+            search: true,
+            pagination: true,
+            columns: [{
+                field: 'ContestID',
+                title: '比赛ID',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'ShortName',
+                title: '简称',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'ContestType',
+                title: '比赛类型',
+                formatter: operateContestType,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'Classification',
+                title: '副标题',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'Name',
+                title: '主标题',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'ActivateTime',
+                title: '激活时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'StartTime',
+                title: '开始时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+
+            }, {
+                field: 'EndTime',
+                title: '结束时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'FinalizeTime',
+                title: '出分时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'DeactivateTime',
+                title: '反激活时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'FreezeTime',
+                title: '排行榜冻结时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'UnfreezeTime',
+                title: '排行榜解冻时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'PubliclyVisible',
+                title: '是否公开',
+                formatter: operateBool,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'isDoubleCheck',
+                title: '启用双评',
+                formatter: operateBool,
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'FullPdfPath',
+                title: '完整赛题路径',
+                formatter: operateLink,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'FullPdfAnsPath',
+                title: '完整赛题答案路径',
+                formatter: operateLink,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'ShowProblemProvider',
+                title: '显示供题人',
+                formatter: operateBool,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'AvailableAsCurrent',
+                title: '允许作为当前比赛',
+                formatter: operateBool,
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'operate',
+                title: '操作',
+                // width: '100px',
+                events: operateEvents1,
+                formatter: operateFormatter
+            }],
+
+        });
+    });
+    // 表格中按钮的点击事件
+    window.operateEvents1 = {
+        'click #btn_delete': function(e, value, row, index) {
+            $.ajax({
+                type : "GET",
+                url : "/res/contests/delete/" + row['ContestID'],
+                contentType: "application/json;charset=utf-8",
+                dataType:"html",
+                data:'',
+                jsonp:'callback',
+                success : function (msg) {
+                    alert(msg);
+                    $('#table').bootstrapTable('remove', {
+                        field: "ContestID",
+                        values: [row['ContestID']]
+                    });
+                },
+                error:function(){
+                    alert("错误");
+                }
+            });
+        },
+        'click #btn_edit': function(e, value, row, index) {
+            $.ajax({
+                type : "GET",
+                url : "/res/contests/getFull/" + row['ContestID'],
+                contentType: "application/json;charset=utf-8",
+                dataType:"json",
+                data:'',
+                jsonp:'callback',
+                success : function (msg) {
+                    if(msg[0]){
+                        $('#ContestID').val(msg[0]['ContestID']);
+                        $('#ContestType').val(msg[0]['ContestType']);
+                        $('#ShortName').val(msg[0]['ShortName']);
+                        $('#Classification').val(msg[0]['Classification']);
+                        $('#Name').val(msg[0]['Name']);
+                        $('#ActivateTime').val(convertToInputTime(convertDbTime(msg[0]['ActivateTime'])));
+                        $('#DeactivateTime').val(convertToInputTime(convertDbTime(msg[0]['DeactivateTime'])));
+                        $('#StartTime').val(convertToInputTime(convertDbTime(msg[0]['StartTime'])));
+                        $('#EndTime').val(convertToInputTime(convertDbTime(msg[0]['EndTime'])));
+                        $('#FinalizeTime').val(convertToInputTime(convertDbTime(msg[0]['FinalizeTime'])));
+                        $('#FreezeTime').val(convertToInputTime(convertDbTime(msg[0]['FreezeTime'])));
+                        $('#UnfreezeTime').val(convertToInputTime(convertDbTime(msg[0]['UnfreezeTime'])));
+                        $('#PubliclyVisible').attr("checked",(!!msg[0]['PubliclyVisible']));
+                        $('#isDoubleCheck').attr("checked",(!!msg[0]['isDoubleCheck']));
+                        $('#ShowProblemProvider').attr("checked",(!!msg[0]['ShowProblemProvider']));
+                        $('#AvailableAsCurrent').attr("checked",(!!msg[0]['AvailableAsCurrent']));
+                        $("#docPath").val(msg[0]['FullPdfPath']);
+                        $("#ansPath").val(msg[0]['FullPdfAnsPath']);
+                        if(msg[0]['FullPdfPath']) $("#_FullPdfPath").html('<a class="btn btn-primary btn-sm" href="' + msg[0]['FullPdfPath'] + '">查看现有</a>');
+                        if(msg[0]['FullPdfAnsPath']) $("#_FullPdfAnsPath").html('<a class="btn btn-primary btn-sm" href="' + msg[0]['FullPdfAnsPath'] + '">查看现有</a>');
+                    }
+                },
+                error:function(){
+                    alert("错误");
+                }
+            });
+        }
+    };
+    // 生成表格中元素
+    function operateFormatter(value, row, index) {
+        return '<div><button id="btn_edit" type="button" class="btn btn-outline-secondary"  data-bs-toggle="modal" data-bs-target="#editModal">修改</button></div>'+
+            '<button id="btn_delete" type="button" class="btn btn-outline-danger">删除</button>';
+    }
+</script>
+<%-include('../../common/scripts/tableOperation.ejs')%>

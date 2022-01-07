@@ -1,0 +1,209 @@
+<div class="container-md mt-5">
+    <h2 class="text-secondary my-3">修改比赛</h2>
+    <input type="hidden" value='' id="ContestID">
+    <div class="alert bg-light">
+        <!--        比赛类型、比赛简称-->
+        <div class="row my-2">
+            <div class="col-md p-3">
+                <h5>比赛类型</h5>
+                <select class="form-select form-select-lg my-3" id="ContestType">
+                    <option value="0">普通比赛</option>
+                    <option value="1">ACM赛制的比赛</option>
+                </select>
+            </div>
+            <div class="col-md p-3">
+                <h5>比赛简称（如：三初一试）</h5>
+                <input type="text" class="form-control my-3" id="ShortName">
+            </div>
+        </div>
+        <!--        比赛标题-->
+        <div>
+            <div class="row my-2">
+                <div class="col-md p-3">
+                    <h5>比赛副标题（如：2020年全员杯网络数学竞赛）</h5>
+                    <input type="text" class="form-control my-3" id="Classification">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-md p-3">
+                    <h5>比赛主标题（如：全员杯挑战赛（第三届））</h5>
+                    <input type="text" class="form-control my-3" id="Name">
+                </div>
+            </div>
+        </div>
+        <!--        激活时间与反激活时间-->
+        <div class="row my-2">
+            <div class="col-md p-3">
+                <h5>激活时间</h5>
+                <p>超过激活时间的比赛允许作为当前竞赛。</p>
+                <input type="datetime-local" class="form-control" value="2021-09-24T13:59:59" id="ActivateTime">
+            </div>
+            <div class="col-md p-3">
+                <h5>反激活时间</h5>
+                <p>超过激活时间的比赛成为历史竞赛。</p>
+                <input type="datetime-local" class="form-control" value="2050-09-24T13:59:59" id="DeactivateTime">
+            </div>
+        </div>
+        <!--        开始和结束时间-->
+        <div class="row my-2">
+            <div class="col-md p-3">
+                <h5>开始时间</h5>
+                <p>超过开始时间的比赛开放题目、并允许接受提交</p>
+                <input type="datetime-local" class="form-control" value="2021-09-25T13:59:59" id="StartTime">
+            </div>
+            <div class="col-md p-3">
+                <h5>结束时间</h5>
+                <p>超过结束时间的比赛开放题目、但不再允许提交</p>
+                <input type="datetime-local" class="form-control" value="2021-09-25T15:59:59" id="EndTime">
+            </div>
+            <div class="col-md p-3">
+                <h5>出分时间</h5>
+                <p>超过出分时间，阅卷关闭，同时开放成绩查询入口。</p>
+                <input type="datetime-local" class="form-control" value="2021-09-25T15:59:59" id="FinalizeTime">
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md p-3">
+                <h5>封榜时间（仅ACM赛制）</h5>
+                <p>超过封榜时间，排行榜冻结，除非手动刷新。</p>
+                <p>一般建议比赛结束前，总时长20%的时刻封榜，对于5小时竞赛，这是1小时；对于2小时竞赛，这是24分钟。</p>
+                <input type="datetime-local" class="form-control" value="2021-09-25T13:59:59" id="FreezeTime">
+            </div>
+            <div class="col-md p-3">
+                <h5>放榜时间（仅ACM赛制）</h5>
+                <p>超过放榜时间后，提示排行榜已经为最新。</p>
+                <input type="datetime-local" class="form-control" value="2021-09-25T15:59:59" id="UnfreezeTime">
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md p-3">
+                <h5>使该比赛公开</h5>
+                <p>不公开的比赛只对管理员可见，即使它已经被激活</p>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="PubliclyVisible" checked="">
+                    <label class="form-check-label" for="PubliclyVisible">启用公开</label>
+                </div>
+            </div>
+            <div class="col-md p-3">
+                <h5>启用双评（仅对普通赛制有效）</h5>
+                <p>简易的两次评分机制。</p>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isDoubleCheck" checked="">
+                    <label class="form-check-label" for="isDoubleCheck">启用双评</label>
+                </div>
+            </div>
+            <div class="col-md p-3">
+                <h5>显示供题人</h5>
+                <p>控制是否显示供题人。</p>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="ShowProblemProvider" checked="">
+                    <label class="form-check-label" for="ShowProblemProvider">显示供题人</label>
+                </div>
+            </div>
+            <div class="col-md p-3">
+                <h5>允许作为当前比赛</h5>
+                <p>控制是否允许作为当前比赛</p>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="AvailableAsCurrent" checked="">
+                    <label class="form-check-label" for="AvailableAsCurrent">可作为当前比赛</label>
+                </div>
+            </div>
+        </div>
+        <!--        上传题目和答案-->
+        <div class="row my-2">
+            <div class="col-md p-3">
+                <h5>完整题目文件<a id="_FullPdfPath"></a></h5>
+                <form id="problemFile" enctype="multipart/form-data">
+                    <input class="form-control my-3" type="file" name="problemDoc">
+                </form>
+                <label class="btn btn-outline-primary my-2" id="problemFileSubmit">上传</label>
+                <a id="problemFileSubmitStatus" class="mx-2 text-secondary"></a>
+                <input type="hidden" name="docPath" id="docPath" value="">
+            </div>
+            <div class="col-md p-3">
+                <h5>完整答案文件<a id="_FullPdfAnsPath"></a></h5>
+                <form id="problemAnsFile" enctype="multipart/form-data">
+                    <input class="form-control my-3" type="file" name="problemDoc">
+                </form>
+                <label class="btn btn-outline-primary my-2" id="problemAnsSubmit">上传</label>
+                <a id="problemAnsSubmitStatus" class="mx-2 text-secondary"></a>
+                <input type="hidden" name="ansPath" id="ansPath" value="">
+            </div>
+            <!--            控制文件上传的脚本-->
+            <script>
+                $(document).ready(function(){
+                    $("#problemFileSubmit").click(function(){
+                        var formData = new FormData($("#problemFile")[0]);
+                        $.ajax({
+                            url: 'http://qybmath.com/res/problems/uploadDoc',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType : false,
+                            success: function (res) {
+                                $("#docPath").val(res.toString());
+                                $("#problemFileSubmitStatus").text("上传成功");
+                            },
+                            error: function (res) {
+                                $("#problemFileSubmitStatus").text("上传失败");
+                            }
+                        });
+                    });
+                    $("#problemAnsSubmit").click(function(){
+                        var formData = new FormData($("#problemAnsFile")[0]);
+                        $.ajax({
+                            url: 'http://qybmath.com/res/problems/uploadDoc',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType : false,
+                            success: function (res) {
+                                $("#ansPath").val(res.toString());
+                                $("#problemAnsSubmitStatus").text("上传成功");
+                            },
+                            error: function (res) {
+                                $("#problemAnsSubmitStatus").text("上传失败");
+                            }
+                        });
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<!--jbji wdcr-->
+<script>
+    $(document).ready(function(){
+        $("#editSubmit").click(function(){
+            // alert('pending');
+            $.post("/res/contests/edit",
+                {
+                    ContestID:          $("#ContestID").val(),
+                    ContestType:        $("#ContestType").val(),
+                    ShortName:          $("#ShortName").val(),
+                    Classification:     $("#Classification").val(),
+                    Name:               $("#Name").val(),
+                    ActivateTime:       $("#ActivateTime").val(),
+                    DeactivateTime:     $("#DeactivateTime").val(),
+                    StartTime:          $("#StartTime").val(),
+                    EndTime:            $("#EndTime").val(),
+                    FreezeTime:         $("#FreezeTime").val(),
+                    UnfreezeTime:       $("#UnfreezeTime").val(),
+                    FinalizeTime:       $("#FinalizeTime").val(),
+                    PubliclyVisible:    $("#PubliclyVisible").prop("checked"),
+                    isDoubleCheck:      $("#isDoubleCheck").prop("checked"),
+                    ShowProblemProvider:$("#ShowProblemProvider").prop("checked"),
+                    AvailableAsCurrent: $("#AvailableAsCurrent").prop("checked"),
+                    FullPdfPath:        $("#docPath").val(),
+                    FullPdfAnsPath:     $("#ansPath").val()
+                },
+                function(data,status){
+                    alert(data);
+                    window.location.reload();
+                }
+            );
+        });
+    });
+
+
+</script>

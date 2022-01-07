@@ -1,0 +1,66 @@
+<div class="container-md d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-1 mt-5 border-bottom">
+    <h1 class="text-primary">用户密码重置</h1>
+    <!--    <div class="btn-toolbar mb-md-0">-->
+    <!--        <a href="/dashboard/problems/add" class="btn btn-primary" title="创建新题目"><i class="fa fa-plus me-2" aria-hidden="true"></i>创建新题目</a>-->
+    <!--    </div>-->
+</div>
+
+<div class="container-md my-4">
+    <h3 class="text-secondary">请求重置</h3>
+    <div class="row">
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">UID</span>
+            <input type="text" class="form-control" id="input_resetpw_uid" aria-describedby="basic-addon3">
+            <button class="btn btn-secondary" id="btn_resetpw_uid">请求重置密码</button>
+        </div>
+        <div class="col-md input-group mb-3">
+            <span class="input-group-text" id="basic-addon3">QQ</span>
+            <input type="text" class="form-control" id="input_resetpw_qq" aria-describedby="basic-addon3">
+            <button class="btn btn-secondary" id="btn_resetpw_qq">请求重置密码</button>
+        </div>
+    </div>
+    <h3 class="text-secondary">重置结果</h3>
+    <div class="alert bg-light">
+        <div class="row m-2">
+            <h4>状态：</h4>
+            <a id="pwstatus"></a>
+        </div>
+        <div class="row m-2">
+            <h4>重置密码的Token：</h4>
+            <a id="pwtoken"></a>
+        </div>
+        <div class="row m-2">
+            <h4>重置链接（24小时有效）：</h4>
+            <a id="pwlink"></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#btn_resetpw_uid").click(function(){
+        $.post("/auth/resetpw/request/uid",
+            {
+                uid: $('#input_resetpw_uid').val()
+            },
+            function(data,status){
+                data = data.replaceAll('/','%2F');
+                $('#pwstatus').text(status);
+                $('#pwtoken').text(data);
+                $('#pwlink').text(encodeURI(`http://qybmath.com/auth/resetpw/change/token/${data}`).replaceAll('%252F','%2F'));
+                // alert("数据: \n" + data + "\n状态: " + status);
+            });
+    });
+    $("#btn_resetpw_qq").click(function(){
+        $.post("/auth/resetpw/request/qq",
+            {
+                qq: $('#input_resetpw_qq').val()
+            },
+            function(data,status){
+                data = data.replaceAll('/','%2F');
+                $('#pwstatus').text(status);
+                $('#pwtoken').text(data);
+                $('#pwlink').text(encodeURI(`http://qybmath.com/auth/resetpw/change/token/${data}`).replaceAll('%252F','%2F'));
+                // alert("数据: \n" + data + "\n状态: " + status);
+            });
+    });
+</script>

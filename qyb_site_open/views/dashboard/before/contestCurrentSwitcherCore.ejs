@@ -1,0 +1,78 @@
+
+<div class="row my-2">
+    <div class="col-md">
+        <h5 class="text-secondary">全局当前竞赛</h5>
+        <p>
+            <%if(globalContest){%>
+                <%=globalContest.ShortName%>(<%=globalContest.ContestID%>)
+            <%}else{%>
+                无
+            <%}%>
+        </p>
+
+    </div>
+    <!---
+    <div class="col-md">
+        <h5 class="text-secondary">我的当前竞赛</h5>
+        <p>
+            <%if(myContest){%>
+            <%=myContest.ShortName%>(<%=myContest.ContestID%>)
+            <%}else{%>
+                无
+            <%}%>
+        </p>
+    </div>
+    --->
+</div>
+
+<div class="row my-2">
+    <div class="col-md">
+        <h5 class="text-secondary">设置全局当前竞赛</h5>
+        <p>对所有非管理员和未设置当前竞赛的管理员有效</p>
+    </div>
+    <div class="col-md">
+        <div class = "input-group">
+            <select class="form-select form-select available-contest" id="GlobalCurrent"></select>
+            <button class="btn btn-primary" id="global_set">设置</button>
+        </div>
+    </div>
+</div>
+<!---
+<div class="row my-2">
+    <div class="col-md">
+        <h5 class="text-secondary">设置我的当前竞赛</h5>
+        <p>仅对当前管理员账号编辑比赛有效</p>
+    </div>
+    <div class="col-md">
+        <div class = "input-group">
+            <select class="form-select form-select available-contest" id="MyCurrent"></select>
+            <button class="btn btn-primary" id="my_set">设置</button>
+        </div>
+    </div>
+</div>
+--->
+<script>
+    $(function (){//加载完成时
+        $.get("/res/contests/getAvailable",function(data,status){
+            var tmp = `<option value="0">没有比赛</option>`;
+            for(var i in data){
+                tmp += `<option value="${data[i].ContestID}">${data[i].ShortName}</option>`;
+            }
+            $('.available-contest').html(tmp);
+        });
+    });
+    $('#global_set').click(function(){
+        $.get('/res/contests/setGlobalCurrent/'+$('#GlobalCurrent').val(), function(data, status){
+            alert(data);
+            window.location.reload();
+        });
+    });
+    /**
+    $('#my_set').click(function(){
+        $.post('/res/contests/setMyCurrent',{ContestID: $('#MyCurrent').val()}, function(data, status){
+            alert(data);
+            window.location.reload();
+        });
+    });
+    **/
+</script>

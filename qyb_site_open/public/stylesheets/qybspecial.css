@@ -1,0 +1,84 @@
+
+/*关于字体*/
+body, html {
+    /*font-size: 14px;*/
+    font-family: PingFang SC,helvetica neue,hiragino sans gb,arial,microsoft yahei ui,microsoft yahei,simsun,sans-serif;
+}
+
+
+.QybBg{
+    background: url(/images/qybbg-alpha.png) repeat-y;
+    background-size: 100%;
+    background-position: left center;
+    /*filter: blur(20px);*/
+}
+
+.QybRainbowBg{
+    background-image: linear-gradient(
+            to right, rgba(196, 225, 127, 0.25), rgba(196, 225, 127, 0.25) 12.5%,
+            rgba(247, 253, 202, 0.25) 12.5%, rgba(247, 253, 202, 0.25) 25%,
+            rgba(254, 207, 113, 0.25) 25%, rgba(254, 207, 113, 0.25) 37.5%,
+            rgba(240, 119, 108, 0.25) 37.5%, rgba(240, 119, 108, 0.25) 50%,
+            rgba(219, 157, 190, 0.25) 50%, rgba(219, 157, 190, 0.25) 62.5%,
+            rgba(196, 156, 222, 0.25) 62.5%, rgba(196, 156, 222, 0.25) 75%,
+            rgba(102, 154, 225, 0.25) 75%, rgba(102, 154, 225, 0.25) 87.5%,
+            rgba(98, 194, 228, 0.25) 87.5%, rgba(98, 194, 228, 0.25)
+    );
+}
+
+/*Banner*/
+.QybBgBanner{
+    background: url(https://qyb-static-res-1252542694.cos.ap-beijing.myqcloud.com/QybBannerFast.png) no-repeat;
+    /*background: url(/images/QybBanner.png) no-repeat;*/
+}
+/*对于不同尺寸设备，Banner展示逻辑不同*/
+@media screen and (max-width:1000px){  .QybBgBanner{background-size: auto 100%;background-position: left center;}  }
+@media screen and (min-width:1000px) and (max-width: 1350px){  .QybBgBanner{background-size: auto 100%;background-position: right center;}  }
+@media screen and  (min-width:1350px){  .QybBgBanner{background-size: 100% auto;background-position: right center;}  }
+
+
+.QybColorBg{
+    background-color: #fa6a00;
+}
+
+.QybColorDark1{
+    background-color: #262626;
+}
+
+.QybColorDark2{
+    background-color: #1a1a1a;
+}
+
+.QybColorFont{
+    /*font-family:"Times New Roman",Georgia,Serif;*/
+    color: #fa6a00;
+}
+
+.QybColorButton{
+    /*font-family:"Times New Roman",Georgia,Serif;*/
+    background-color: #fa6a00;
+    color: white;
+    border-radius: 0px;
+    padding: 0.5rem 2.5rem;
+}
+.QybColorButton:hover {
+    background-color: #ff7d28;
+}
+
+.QybColorNavButton{
+    background-color: #fa6a00;
+    color: white;
+    border-radius: 0px;
+}
+.QybColorNavButton:hover {
+    background-color: #ff7d28;
+}
+
+@media screen and (min-width:960px){
+    .QybColorNavButton{
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+        margin-top: -0.6rem; margin-bottom: -1rem
+    }
+}
+

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <title>密码重置</title>
+    <!-- Bootstrap core CSS -->
+    <% include ../common/header.ejs %>
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        /*signin special*/
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+            /*background-position:  center top;*/
+            /*background-image: url("/images/qybbg.png");*/
+            /*background-size:100% 100%;*/
+            /*background-repeat:no-repeat;*/
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+    </style>
+</head>
+<body class="text-center">
+
+<main class="form-signin">
+    <form method="post">
+        <a href="/">
+            <img class="mb-4" src="/images/logo.png" alt="" width="165" height="171">
+        </a>
+        <h1 class="h3 mb-3 fw-normal">密码重置</h1>
+        <h2 class="h4 mb-3 fw-normal text-warning"><%=resetpw_msg%></h2>
+        <input type="hidden" id="mytoken" value="<%=token%>">
+        <div class="form-floating shadow">
+            <input type="password" class="form-control" id="pwd" placeholder="Password" name="pwd">
+            <label for="floatingPassword">新的全员杯密码</label>
+        </div>
+        <div class="form-floating shadow">
+            <input type="password" class="form-control" id="pwd-repeat" placeholder="Password" name="pwd-repeat">
+            <label for="floatingPassword">再次输入全员杯密码</label>
+        </div>
+
+    </form>
+    <button class="w-100 btn btn-lg btn-primary shadow" id="btn_ResetPw">重置密码</button>
+
+    <div class="mt-5 mb-3 text-muted">
+        <% include ../common/copyright %>
+    </div>
+</main>
+
+
+
+</body>
+</html>
+
+<script>
+    $("#btn_ResetPw").click(function(){
+        $.post("/auth/resetpw/submit",
+            {
+                token: $('#mytoken').val(),
+                pwd: $('#pwd').val(),
+                pwdr : $('#pwd-repeat').val()
+            },
+            function(data,status){
+                alert(data);
+            }
+        );
+    });
+</script>

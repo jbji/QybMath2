@@ -1,0 +1,29 @@
+.scoreboard{
+    border-bottom: 1px solid black;
+    height: 42px;
+}
+
+.score-first{
+    background: #1daa1d;
+}
+
+.score-correct{
+    background: #60e760;
+}
+
+.score-correct-partly{
+    background: #e7ca60;
+}
+
+.socre-incorrect{
+    backgournd: #e87272;
+}
+
+score-pending{
+    background: #6666FF;
+}
+
+score-untried{
+    background: #6666FF;
+}
+

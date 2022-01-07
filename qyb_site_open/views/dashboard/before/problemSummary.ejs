@@ -1,0 +1,431 @@
+<div class="container-md d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-1 mt-5 border-bottom">
+    <h1 class="text-primary">题目管理</h1>
+    <div class="btn-toolbar mb-md-0">
+        <a href="/dashboard/problems/add" class="btn btn-primary" title="创建新题目"><i class="fa fa-plus me-2" aria-hidden="true"></i>创建新题目</a>
+    </div>
+</div>
+<div class="container-md mt-3">
+    <p class="text-primary">比赛的试题册由题目组成，要创建比赛，应该先建立题目，然后才可能设置题目与比赛之间的映射。</p>
+</div>
+<div class="container-md mt-3">
+    <h2 class="text-secondary mb-3 mt-2">最近添加的题目</h2>
+
+    <div class="alert bg-light">
+        <div class="row">
+            <div>
+                <table id="table">
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Trigger Modal Component -->
+<!--    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#infoModal">-->
+<!--        Launch demo modal-->
+<!--    </button>-->
+<!--    Modal：查看题目详情-->
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('infoModal'), options);
+        var editModal = new bootstrap.Modal(document.getElementById('editModal'), options);
+    </script>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="basicModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="infoModalLabel">题目详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md py-1 px-3">
+                            <h6>题目ID <a id="problemID"></a></h6>
+                            <h6>题目名 <a id="problemName"></a></h6>
+                            <h6>添加时间 <a id="addedTime"></a></h6>
+                        </div>
+                        <div class="col-md py-1 px-3">
+                            <h6>供题人 <a id="userName"></a></h6>
+                            <h6>供题人UID <a id="userUID"></a></h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md py-1 px-3">
+                            <h6>题目草稿文件 <a id="draftFilePath"></a></h6>
+                        </div>
+                        <div class="col-md py-1 px-3">
+                            <h6>答案草稿文件 <a id="draftAnsPath"></a></h6>
+                        </div>
+                    </div>
+                    <!--        题目-->
+                    <div class="row py-1 px-3">
+                        <div class="col-md py-1 px-3">
+                            <h6 class="my-2">题目内容</h6>
+                            <div id="problemObject"></div>
+                        </div>
+                    </div>
+                    <!--        答案-->
+                    <div class="row py-1 px-3">
+                        <div class="col-md py-1 px-3">
+                            <h6 class="my-2">题目答案</h6>
+                            <div id="answerObject"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+<!--                    <button type="button" class="btn btn-primary">Yes</button>-->
+<!--                    <button type="button" class="btn btn-primary">No</button>-->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--Modal：修改题目-->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="basicModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="editModalLabel">修改题目</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!--上传图片资源-->
+                    <%include imgResources.ejs%>
+                    <!--修改题目-->
+                    <div class="container-md mt-5">
+                        <h2 class="text-secondary my-3">修改题目</h2>
+                        <!--    题目名-->
+                        <div class="alert bg-light">
+                            <input type="hidden" id="_problemID" value="">
+                            <div class="row my-2">
+                                <div class="col-md p-3">
+                                    <h5>题目名</h5>
+                                    <input type="text" class="form-control my-3"  placeholder="输入题目名..." id="_problemName" name="problemName">
+                                </div>
+                            </div>
+                            <!--        上传题目和答案草稿-->
+                            <div class="row my-2">
+                                <div class="col-md p-3">
+                                    <h5>题目草稿文件<a id="_draftFilePath"></a></h5>
+                                    <form id="problemFile" enctype="multipart/form-data">
+                                        <input class="form-control my-3" type="file" name="problemDoc">
+                                    </form>
+                                    <label class="btn btn-outline-primary my-2" id = "problemFileSubmit">上传</label>
+                                    <a id="problemFileSubmitStatus" class="mx-2 text-secondary"></a>
+                                    <input type="hidden" name="docPath" id="docPath" value="">
+                                </div>
+                                <div class="col-md p-3">
+                                    <h5>答案草稿文件<a id="_draftAnsPath"></a></h5>
+                                    <form id="problemAnsFile" enctype="multipart/form-data">
+                                        <input class="form-control my-3" type="file" name="problemDoc">
+                                    </form>
+                                    <label class="btn btn-outline-primary my-2" id = "problemAnsSubmit">上传</label>
+                                    <a id="problemAnsSubmitStatus" class="mx-2 text-secondary"></a>
+                                    <input type="hidden" name="ansPath" id="ansPath" value="">
+                                </div>
+                                <script>
+                                    $(document).ready(function(){
+                                        $("#problemFileSubmit").click(function(){
+                                            var formData = new FormData($("#problemFile")[0]);
+                                            $.ajax({
+                                                url: 'http://qybmath.com/res/problems/uploadDoc',
+                                                type: 'POST',
+                                                data: formData,
+                                                processData: false,
+                                                contentType : false,
+                                                success: function (res) {
+                                                    $("#docPath").val(res.toString());
+                                                    $("#problemFileSubmitStatus").text("上传成功");
+                                                },
+                                                error: function (res) {
+                                                    $("#problemFileSubmitStatus").text("上传失败");
+                                                }
+                                            });
+                                        });
+                                        $("#problemAnsSubmit").click(function(){
+                                            var formData = new FormData($("#problemAnsFile")[0]);
+                                            $.ajax({
+                                                url: 'http://qybmath.com/res/problems/uploadDoc',
+                                                type: 'POST',
+                                                data: formData,
+                                                processData: false,
+                                                contentType : false,
+                                                success: function (res) {
+                                                    $("#ansPath").val(res.toString());
+                                                    $("#problemAnsSubmitStatus").text("上传成功");
+                                                },
+                                                error: function (res) {
+                                                    $("#problemAnsSubmitStatus").text("上传失败");
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <!--        题目-->
+                            <div class="row my-2">
+                                <h5 class="mt-3">题目内容HTML编辑器</h5>
+                                <p>对题目进行正式排版；
+                                    <br>图片：上传图片资源后以相对路径插入。
+                                    <br>公式：\$你的LaTeX行内公式\$，\$\$整行公式\$\$；
+                                </p>
+                                <form method="post">
+                                    <textarea id="problemContent"></textarea>
+                                </form>
+                                <script>
+                                    tinymce.init({
+                                        selector: '#problemContent',
+                                        language:'zh_CN',
+                                        plugins: 'code link image paste table print help emoticons',
+                                        toolbar: 'code | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                                            'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+                                            'forecolor backcolor emoticons | help | tools'
+                                    });
+                                </script>
+                            </div>
+                            <!--        答案-->
+                            <div class="row my-2">
+                                <h5 class="mt-3">题目答案HTML编辑器</h5>
+                                <p>在此编辑题目答案</p>
+                                <form method="post">
+                                    <textarea id="problemAns"></textarea>
+                                </form>
+                                <script>
+                                    tinymce.init({
+                                        selector: '#problemAns',
+                                        language:'zh_CN',
+                                        plugins: 'code link image paste table print help emoticons',
+                                        toolbar: 'code | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                                            'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+                                            'forecolor backcolor emoticons | help | tools'
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <!--jbji wdcr-->
+<!--                    提交按钮-->
+                    <script>
+                        $(document).ready(function(){
+                            $("#editSubmit").click(function(){
+                                var text1 = tinyMCE.get('problemContent');
+                                var text2 = tinyMCE.get('problemAns');
+                                text1.setProgressState(1); // Show progress
+                                text2.setProgressState(1);
+                                $.post("/res/problems/edit",
+                                    {
+                                        Name: $("#_problemName").val(),
+                                        ProblemID: $("#_problemID").val(),
+                                        DraftFilePath: $("#docPath").val(),
+                                        ProblemObject: text1.getContent(),
+                                        DraftAnsPath: $("#ansPath").val(),
+                                        AnswerObject: text2.getContent()
+                                    },
+                                    function(data,status){
+                                        text1.setProgressState(0);
+                                        text2.setProgressState(0);
+                                        alert(data);
+                                        window.location.reload();
+                                    }
+                                );
+                            });
+                        });
+
+
+
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <!--                    <button type="button" class="btn btn-primary">Yes</button>-->
+                    <!--                    <button type="button" class="btn btn-primary">No</button>-->
+                    <button type="button" class="btn btn-primary" id="editSubmit">提交</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--恢复误删-->
+<div class="container-md p-4 row">
+    <div class="col-md input-group mb-3">
+        <span class="input-group-text" id="basic-addon3">根据题目ID恢复已删除题目</span>
+        <input type="text" class="form-control" id="input_redoDelete" aria-describedby="basic-addon3">
+        <button class="btn btn-secondary" id="btn_redoDelete">恢复误删</button>
+    </div>
+    <script>
+        $("#btn_redoDelete").click(function(){
+            $.get("/res/problems/redodelete/"+$("#input_redoDelete").val(),function(data,status){
+                alert(data);
+            });
+        });
+    </script>
+    <div class="col-md"></div>
+</div>
+
+<script>
+    $(function(){
+        $('#table').bootstrapTable({
+            ajax : function (request) {
+                $.ajax({
+                    type : "GET",
+                    url : "/res/problems/getAll",
+                    contentType: "application/json;charset=utf-8",
+                    dataType:"json",
+                    data:'',
+                    jsonp:'callback',
+                    success : function (msg) {
+                        request.success({
+                            row : msg
+                        });
+                        $('#table').bootstrapTable('load', msg);
+                    },
+                    error:function(){
+                        alert("错误");
+                    }
+                });
+            },
+
+            toolbar:'#toolbar',
+            singleSelect:true,
+            clickToSelect:true,
+            sortName: "AddedTime",
+            sortOrder: "desc",
+            pageSize: 15,
+            pageNumber: 1,
+            pageList: "[10, 25, 50, 100, All]",
+            showToggle: true,
+            showRefresh: true,
+            showColumns: false,
+            search: true,
+            pagination: true,
+            columns: [{
+                field: 'ProblemID',
+                title: '题目ID',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'Name',
+                title: '名称',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'AddedTime',
+                title: '添加时间',
+                formatter: operateTime,
+                switchable: true,
+                sortable: true
+            },{
+                field: 'NickName',
+                title: '创建者',
+                switchable: true,
+                sortable: true
+            }, {
+                field: 'operate',
+                title: '操作',
+                // width: '100px',
+                events: operateEvents1,
+                formatter: operateFormatter
+            }],
+
+        });
+    });
+    window.operateEvents1 = {
+        'click #btn_detail': function(e, value, row, index) {
+            //ajax get Problem Detial And Show it in modal
+            $.ajax({
+                type : "GET",
+                url : "/res/problems/getFull/" + row['ProblemID'],
+                contentType: "application/json;charset=utf-8",
+                dataType:"json",
+                data:'',
+                jsonp:'callback',
+                success : function (msg) {
+                    if(msg[0]){
+                        $('#problemID').text(msg[0]['ProblemID']);
+                        $('#problemName').text(msg[0]['Name']);
+                        $("#addedTime").text(msg[0]['AddedTime']);
+                        $("#userName").text(msg[0]['NickName']);
+                        $("#userUID").text(msg[0]['UID']);
+                        // $("#draftFilePath").text('123');
+                        if(msg[0]['DraftFilePath']) $("#draftFilePath").html('<a class="btn btn-primary btn-sm" href="' + msg[0]['DraftFilePath'] + '">点击查看</a>');
+                        if(msg[0]['DraftAnsPath']) $("#draftAnsPath").html('<a class="btn btn-primary btn-sm" href="' + msg[0]['DraftAnsPath'] + '">点击查看</a>');
+                        // console.log(msg[0]['ProblemObject']);
+                        // console.log(window.atob( JSON.parse( window.atob(msg[0]['ProblemObject']) )['body'] ));
+                        $("#problemObject").html(utf8to16(window.atob( JSON.parse( window.atob(msg[0]['ProblemObject']) )['body'] ).toString() ));
+                        $("#answerObject").html(utf8to16(window.atob( JSON.parse( window.atob(msg[0]['AnswerObject']) )['body'] )));
+                        MathJax.typeset();
+                    }
+
+                },
+                error:function(){
+                    alert("错误");
+                }
+            });
+        },
+        'click #btn_delete': function(e, value, row, index) {
+            //ajax get Problem Detial And Show it in modal
+            $.ajax({
+                type : "GET",
+                url : "/res/problems/delete/" + row['ProblemID'],
+                contentType: "application/json;charset=utf-8",
+                dataType:"html",
+                data:'',
+                jsonp:'callback',
+                success : function (msg) {
+                    alert(msg);
+                    $('#table').bootstrapTable('remove', {
+                        field: "ProblemID",
+                        values: [row['ProblemID']]
+                    });
+                },
+                error:function(){
+                    alert("错误");
+                }
+            });
+        },
+        'click #btn_edit': function(e, value, row, index) {
+            //ajax get Problem Detial And Show it in modal
+            var text1 = tinyMCE.get('problemContent');
+            var text2 = tinyMCE.get('problemAns');
+            text1.setProgressState(1); // Show progress
+            text2.setProgressState(1);
+            $.ajax({
+                type : "GET",
+                url : "/res/problems/getFull/" + row['ProblemID'],
+                contentType: "application/json;charset=utf-8",
+                dataType:"json",
+                data:'',
+                jsonp:'callback',
+                success : function (msg) {
+                    if(msg[0]){
+                        text1.setContent(utf8to16(window.atob( JSON.parse( window.atob(msg[0]['ProblemObject']) )['body'] ).toString() ));
+                        text2.setContent(utf8to16(window.atob( JSON.parse( window.atob(msg[0]['AnswerObject']) )['body'] )));
+                        $('#_problemName').val(msg[0]['Name']);
+                        $('#_problemID').val(msg[0]['ProblemID']);
+                        // $("#draftFilePath").text('123');
+                        $("#docPath").val(msg[0]['DraftFilePath']);
+                        $("#ansPath").val(msg[0]['DraftAnsPath']);
+                        if(msg[0]['DraftFilePath']) $("#_draftFilePath").html('<a class="btn btn-primary btn-sm" href="' + msg[0]['DraftFilePath'] + '">查看现有</a>');
+                        if(msg[0]['DraftAnsPath']) $("#_draftAnsPath").html('<a class="btn btn-primary btn-sm" href="' + msg[0]['DraftAnsPath'] + '">查看现有</a>');
+                        // console.log(msg[0]['ProblemObject']);
+                        // console.log(window.atob( JSON.parse( window.atob(msg[0]['ProblemObject']) )['body'] ));
+                        MathJax.typeset();
+                        text1.setProgressState(0);
+                        text2.setProgressState(0);
+
+                    }
+                },
+                error:function(){
+                    alert("错误");
+                }
+            });
+        }
+
+    };
+
+    function operateFormatter(value, row, index) {
+        return '<div class="btn-group me-2" ><button id="btn_detail" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#infoModal">查看详情</button>'
+            +'<button id="btn_edit" type="button" class="btn btn-outline-secondary"  data-bs-toggle="modal" data-bs-target="#editModal">修改</button></div>'+
+            '<button id="btn_delete" type="button" class="btn btn-outline-danger">删除</button>';
+    }
+</script>
+
+<%-include('../../common/scripts/tableOperation.ejs')%>
+<%-include('../../common/scripts/chineseBase64tool.ejs')%>

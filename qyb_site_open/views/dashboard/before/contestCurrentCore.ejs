@@ -1,0 +1,77 @@
+<%if(globalContest){%>
+    <div class="px-3 pt-3">
+        <h6 class="">
+            比赛简称和ID:
+            <%=globalContest.ShortName%>(<%=globalContest.ContestID%>)
+        </h6>
+        <h5 class="text-secondary">
+            <%=globalContest.Classification%>
+        </h5>
+        <h4 class="text-primary">
+            <%=globalContest.Name%>
+        </h4>
+    </div>
+    <div class="px-3 pt-3">
+        <h5 class="text-secondary">完整赛题PDF：
+            <%if(globalContest.FullPdfPath){%>
+                <a class="btn btn-outline-success btn-sm" href="<%=globalContest.FullPdfPath%>">查看现有</a>
+            <%}else{%>
+                                       暂无
+            <%}%>
+        </h5>
+        <h5 class="text-secondary">完整答案PDF：
+            <%if(globalContest.FullPdfAnsPath){%>
+            <a class="btn btn-outline-success btn-sm" href="<%=globalContest.FullPdfAnsPath%>">查看现有</a>
+            <%}else{%>
+                暂无
+            <%}%>
+        </h5>
+        <h5 class="text-secondary">比赛详情（考生须知）：
+            <a class="btn btn-outline-success btn-sm" href="/dashboard/contests/setDetails/<%=globalContest.ContestID%>">修改</a>
+        </h5>
+    </div>
+    <table class="table table-hover">
+        <thead><tr>
+            <th scope="col">类型</th>
+            <th scope="col">时间戳</th>
+            <th scope="col">操作</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+            <th scope="row">激活时间</th>
+            <td><%=globalContest.ActivateTime%></td>
+        </tr>
+
+        <tr>
+            <th scope="row">开始时间</th>
+            <td><%=globalContest.StartTime%></td>
+        </tr>
+        <%if(globalContest.ContestType){%>
+            <tr>
+                <th scope="row">封榜时间</th>
+                <td><%=globalContest.FreezeTime%></td>
+            </tr>
+        <%}%>
+        <tr>
+            <th scope="row">结束时间</th>
+            <td><%=globalContest.EndTime%></td>
+        </tr>
+        <%if(globalContest.ContestType){%>
+            <tr>
+                <th scope="row">榜单解封时间</th>
+                <td><%=globalContest.UnfreezeTime%></td>
+            </tr>
+        <%}%>
+        <tr>
+            <th scope="row">出分时间</th>
+            <td><%=globalContest.FinalizeTime%></td>
+        </tr>
+        <tr>
+            <th scope="row">反激活时间</th>
+            <td><%=globalContest.DeactivateTime%></td>
+        </tr>
+        </tbody>
+    </table>
+<%}else{%>
+    <h5 class="text-warning">当前没有比赛</h5>
+<%}%>

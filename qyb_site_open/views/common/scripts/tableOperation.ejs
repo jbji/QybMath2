@@ -1,0 +1,46 @@
+<%-include('./timetool.ejs')%>
+<script>
+    //修复表格的sync图标
+    $(function(){
+        $(".fa-sync").addClass("fa-refresh");
+    });
+
+    function operateTime(value, row, index){
+        if(value) return convertDbTime(value);
+        return value;
+    }
+    function operateBool(value, row, index){
+        if(value === 1){
+            return '是';
+        }
+        if(value === 0){
+            return '否';
+        }
+        return '未知';
+    }
+    function operateContestType(value, row, index){
+        if(value === 0){
+            return '普通比赛';
+        }
+        if(value === 1){
+            return 'ACM赛制的比赛';
+        }
+        return '其他赛制比赛';
+    }
+    function operateUserType(value, row, index){
+        if(value === 0){
+            return '普通用户';
+        }
+        if(value === 1){
+            return '裁判/命题人';
+        }
+        if(value === 2){
+            return '管理员';
+        }
+        return '未知用户';
+    }
+    function operateLink(value, row, index){
+        if(value) return `<button class="btn btn-primary btn-sm" onclick="location='${value}'">点击查看</button>`;
+        return value;
+    }
+</script>

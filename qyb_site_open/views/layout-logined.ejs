@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <% include common/header.ejs %>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('common/menu-logined.ejs')%>
+
+        <%- defineContent('pageSection') %>
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- foot js-->
+    <% include common/footer-logined.ejs %>
+</body>
+</html>
+
