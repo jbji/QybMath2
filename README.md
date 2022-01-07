@@ -3,7 +3,7 @@
 
 Hi There!
 
-It's been a long time since I've ever published things on my site. Now I'm introducing something that I had been working on for weeks during 9,2021~10,2021, a website powered by Express, ejs, and JQuery, with BootStrap, MathJax, etc... As It's going to be deprecated, I choose to make it opensource for now on. 
+It's been a long time since I've ever published things on my site. Now I'm introducing something that I had been working on for weeks during 9,2021~10,2021, a website powered by Express, ejs, and JQuery, with BootStrap, MathJax, etc... As It's going to be deprecated, I choose to make it opensource from now on. 
 
 Note that all the rights for multi-media(i.e. images, etc.) resources are reserved, meaning that they're NOT expected to be used in any other project, which is part of the intellectual property right for "全员杯竞赛"(qybmath).
 
